@@ -6,7 +6,7 @@ import './scss/TodoTemplate.scss';
 
 const TodoTemplate = () => {
   return (
-    <div className='TodoTemplate d-flex flex-column'>
+    <div className='TodoTemplate'>
       <TodoHeader />
       <TodoMain />
       <TodoInput />
