@@ -3,22 +3,40 @@ import { MdAdd } from 'react-icons/md'
 import cn from 'classnames';
 import './scss/TodoInput.scss';
 
-const TodoInput = () => {
+const TodoInput = ({ addTodo }) => {
 
 	// 입력창이 열리는 여부를 표현하는 상태값
 	const [open, setOpen] = useState(false);
+
+	// 할 일 입력창에 입력한 내용을 표현하는 상태값
+	const [todoText, setTodoText] = useState('');
 
 	// + 버튼 클릭 시 이벤트 처리
 	const onToggle = () => {
 		setOpen(!open);
 	}
 
+	// submit 이벤트 핸들러
+	const submitHandler = e => {
+		e.preventDefault();
+
+		addTodo(todoText);
+
+		// 입력이 끝나면 입력창 비우기
+		setTodoText('');
+	}
+
+	// input change 이벤트 핸들러 함수
+	const todoChangeHandler = e => {
+		setTodoText(e.target.value);
+	}
+
 	return (
 		<>
 			{open && (
 				<div className="form-wrapper">
-					<form className='insert-form'>
-						<input type="text" placeholder='할 일을 입력 후, 엔터를 눌러주세요. :)' />
+					<form className='insert-form' onSubmit={submitHandler}>
+						<input type="text" placeholder='할 일을 입력 후, 엔터를 눌러주세요. :)' onChange={todoChangeHandler} value={todoText} />
 					</form>
 				</div>
 			)}
