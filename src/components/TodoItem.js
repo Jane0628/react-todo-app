@@ -1,14 +1,18 @@
 import React from 'react';
 import { BsCheckCircle, BsFillTrash3Fill } from 'react-icons/bs';
 import './scss/TodoItem.scss';
+import classNames from 'classnames';
 
-const TodoItem = () => {
+const TodoItem = ({ item }) => {
+
+  const { id, title, done } = item;
+
   return (
     <li className='todo-list-item'>
-      <div className="check-circle">
+      <div className={classNames("check-circle", { active: done })} >
         <BsCheckCircle />
       </div>
-      <span className='text'>할 일 어쩌고~~</span>
+      <span className={classNames('text', { finish: done })}>{title}</span>
       <div className="remove">
         <BsFillTrash3Fill />
       </div>
