@@ -18,7 +18,7 @@ const TodoTemplate = () => {
     {
       id: 2,
       title: '주간 신문 읽기',
-      done: true
+      done: false
     },
     {
       id: 3,
@@ -31,7 +31,6 @@ const TodoTemplate = () => {
       done: false
     }
   ]);
-
 
   // todoInput에게 todoText를 받아오는 함수
   // 자식 컴포넌트가 부모 컴포넌트에게 데이터를 전달할 때는 props 사용이 불가능.
@@ -55,14 +54,33 @@ const TodoTemplate = () => {
     setTodos([...todos, newTodo]);
   }
 
+  // 할 일 삭제 처리 함수
+  const removeTodo = id => {
+    // console.log(`삭제 대상 id : ${id}`);
+
+    // 주어진 배열의 값을을 순회하여 조건에 맞는 요소들만 모아서 새로운 배열로 리턴해주는 함수.
+    setTodos(todos.filter(todo => todo.id !== id));
+  }
+
+  // 할 일 체크 처리 함수
+  const checkTodo = id => {
+    console.log(`체크한 Todo id : ${id}`);
+
+    setTodos(todos.map(todo => todo.id === id ? { ...todo, done: !todo.done } : todo));
+  }
+
+  // 체크가 안된 할 일 개수 세기
+  const countTodo = () => todos.filter(todo => !todo.done).length;
+
+
   useEffect(() => {
     console.log(todos);
   }, [todos]);
 
   return (
     <div className='TodoTemplate'>
-      <TodoHeader />
-      <TodoMain todoList={todos} />
+      <TodoHeader count={countTodo} />
+      <TodoMain todoList={todos} remove={removeTodo} check={checkTodo} />
       <TodoInput addTodo={addTodo} />
     </div>
   );
