@@ -9,7 +9,7 @@ const TodoItem = ({ item, remove, check }) => {
 
   return (
     <li className='todo-list-item'>
-      <div className={classNames("check-circle", { active: done })} onClick={() => check(id)} >
+      <div className={classNames("check-circle", { active: done })} onClick={() => check(id, done)} >
         <BsCheckCircle />
       </div>
       <span className={classNames('text', { finish: done })}>{title}</span>

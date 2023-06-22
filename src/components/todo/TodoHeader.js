@@ -19,7 +19,7 @@ const TodoHeader = ({ count }) => {
       <div className='day'>{dayName}</div>
       <div className="tasks-left">할 일 {count()}개 남음</div>
     </header>
-  )
+  );
 }
 
-export default TodoHeader
+export default TodoHeader;
