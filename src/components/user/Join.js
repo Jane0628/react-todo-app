@@ -1,7 +1,16 @@
 import React, { useState } from 'react'
 import { Button, Container, Grid, TextField, Typography, Link } from "@mui/material";
+import { API_BASE_URL as BASE, USER } from '../../config/host-config';
+
+// 리다이렉트 사용하기
+import { useNavigate } from 'react-router-dom';
 
 const Join = () => {
+
+  // 리다이렉트 사용하기
+  const redirection = useNavigate();
+
+  const API_BASE_URL = BASE + USER;
 
   // 상태 변수로 회원가입 입력값 관리
   const [userValue, setUserValue] = useState({
@@ -59,10 +68,49 @@ const Join = () => {
     saveInputState({ position: 'userName', inputValue, msg, flag });
   }
 
+  // 이메일 중복 체크 서버 통신 함수
+  const fetchDuplicateCheck = email => {
+
+    let msg = '', flag = false;
+    fetch(`${API_BASE_URL}/check?email=${email}`)
+      .then(res => res.json())
+      .then(json => {
+        console.log(json);
+        if (json) {
+          msg = '이미 사용중인 이메일입니다. :(';
+        } else {
+          msg = '사용 가능한 이메일입니다! :)';
+          flag = true;
+        }
+
+        setUserValue({ ...userValue, email: email });
+        setMessage({ ...message, email: msg });
+        setCorrect({ ...correct, email: flag });
+      }).catch(err => {
+        console.log('서버 통신이 원활하지 않습니다.');
+      });
+  }
+
   // 이메일 입력창 체인지 이벤트 핸들러
   const emailHandler = e => {
-    setUserValue({ ...userValue, email: e.target.value });
-    // saveInputState({ position: 'email', inputValue, msg, flag });
+    const inputValue = e.target.value;
+    const emailRegex = /^[a-z0-9\.\-_]+@([a-z0-9\-]+\.)+[a-z]{2,6}$/;
+
+    // 입력값 검증
+    let msg;
+    let flag = false;
+
+    if (!inputValue) {
+      msg = '이메일은 필수입니다!';
+    } else if (!emailRegex.test(inputValue)) {
+      msg = '이메일의 형식이 아니에요! :(';
+    } else {
+      // 이메일 중복 체크
+      fetchDuplicateCheck(inputValue);
+      return;
+    }
+
+    saveInputState({ position: 'email', inputValue, msg, flag });
   }
 
   // 비밀번호 입력창 체인지 이벤트 핸들러
@@ -112,9 +160,40 @@ const Join = () => {
     saveInputState({ position: 'passwordCheck', inputValue: 'pass', msg, flag });
   }
 
+  // 4개의 입력칸이 모두 검증에 통과했는지 여부를 검사
+  const isValid = () => {
+    for (const key in correct) {
+      const flag = correct[key];
+      if (!flag) return false;
+    }
+
+    return true;
+  }
+
+  // 회원가입 처리 서버 요청
+  const fetchSignUpPost = () => {
+    fetch(API_BASE_URL, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(userValue) })
+      .then(res => {
+        if (res.status === 200) {
+          alert('회원가입에 성공하셨습니다! :)');
+          // 로그인 페이지로 리다이렉트
+          redirection('/login');
+        } else {
+          alert('서버와의 통신이 원활하지 않습니다. :(');
+        }
+      });
+  }
+
   const joinButtonClickHandler = e => {
     e.preventDefault();
-    console.log(userValue);
+
+    // 회원가입 서버 요청
+    if (isValid()) {
+      fetchSignUpPost();
+      return;
+    } else {
+      alert('입력란을 다시 확인해주세요!');
+    }
   }
 
   return (
