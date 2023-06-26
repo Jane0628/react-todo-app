@@ -1,8 +1,11 @@
 import React from 'react'
 import { Button, Container, Grid, TextField, Typography, Link } from "@mui/material";
+import { useNavigate } from 'react-router-dom';
 import { API_BASE_URL as BASE, USER } from '../../config/host-config';
 
-const login = () => {
+const Login = () => {
+
+  const redirection = useNavigate();
 
   const REQUEST_URL = BASE + USER + '/signin';
 
@@ -25,14 +28,24 @@ const login = () => {
     // then()을 활용하는 것보다 가독성이 좋고 쓰기도 쉽습니다.
     const res = await fetch(REQUEST_URL, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email: $email.value, password: $password.value }) });
 
-    if (res.status !== 200) {
+    if (res.status === 400) {
       const text = await res.text();
       alert(text);
       return;
     }
 
-    const json = await res.json();
-    console.log(json);
+    const { token, userName, email, role } = await res.json();
+    // console.log(json);
+
+    // json에 담긴 인증 정보를 클라이언트에 보관
+    // 1. 로컬 스토리지 - 브라우저가 종료되어도 보관됨.
+    // 2. 세션 스토리지 - 브라우저가 종료되면 사라짐.
+    localStorage.setItem('ACCESS_TOKEN', token);
+    localStorage.setItem('LOGIN_USERNAME', userName);
+    localStorage.setItem('USER_ROLE', role);
+
+    // 홈으로 리다이렉트
+    redirection('/');
 
     // fetch(REQUEST_URL, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email: $email.value, password: $password.value }) })
     //   .then(res => res.status === 200 ? res.json() : res.text())
@@ -43,7 +56,6 @@ const login = () => {
     //     }
     //     console.log(result);
     //   });
-
 
   }
 
@@ -99,4 +111,4 @@ const login = () => {
   );
 }
 
-export default login;
+export default Login;
