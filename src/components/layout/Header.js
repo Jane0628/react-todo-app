@@ -1,16 +1,22 @@
-import { AppBar, Toolbar, Grid, Typography } from "@mui/material";
-import React, { useContext } from 'react'
+import { AppBar, Toolbar, Grid, Typography, Button } from "@mui/material";
+import React, { useContext, useEffect, useState } from 'react'
 import './header.css';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "../../util/AuthContext";
 
 const Header = () => {
 
+  const redirection = useNavigate();
+
   // AuthContext에서 로그인 상태와 onLogout 함수를 가져옵니다.
   const { isLoggedIn, onLogout, userName } = useContext(AuthContext);
 
-  // AuthContext의 onLogout 함수를 호출하여 로그인 상태를 업데이트합니다.
-  onLogout();
+  // 로그아웃 핸들러
+  const logoutHandler = () => {
+    // AuthContext의 onLogout 함수를 호출하여 로그인 상태를 업데이트합니다.
+    onLogout();
+    redirection('/login');
+  }
 
   return (
     <AppBar position="fixed" style={{
@@ -35,7 +41,7 @@ const Header = () => {
           <Grid item>
             <div className="btn-group">
               {isLoggedIn ?
-                (<button className="logout-btn" onClick={onLogout()}>로그아웃</button>)
+                (<button className="logout-btn" onClick={logoutHandler}>로그아웃</button>)
                 :
                 (<>
                   <Link to={'/login'}>로그인</Link>

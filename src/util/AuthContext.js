@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 // 새로운 전역 Context를 생성
 const AuthContext = React.createContext({
   isLoggedIn: false,                // 로그인 여부 추적
   userName: '',
   onLogout: () => { },              // 더미 함수를 넣으면 자동완성 시 편함
-  onLogin: (email, password) => { }
+  onLogin: (email, password) => { },
+  setUserInfo: () => { }
 });
 
 // 위에서 생성한 Context를 제공할 수 있는 provider
 // 이 컴포넌트를 통해 자식 컴포넌트들에게 인증 상태와 관련된 함수들을 전달할 수 있음.
 export const AuthContextProvider = props => {
 
-  const redirection = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState('');
 
@@ -42,11 +41,17 @@ export const AuthContextProvider = props => {
   const logoutHandler = () => {
     localStorage.clear();
     setIsLoggedIn(false);
-    redirection('/login');
+  }
+
+  // 토큰 및 로그인 유저 데이터를 브라우저에 저장하는 함수
+  const setLoginUserInfo = ({ token, userName, role }) => {
+    localStorage.setItem('ACCESS_TOKEN', token);
+    localStorage.setItem('LOGIN_USERNAME', userName);
+    localStorage.setItem('USER_ROLE', role);
   }
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, userName, onLogout: logoutHandler, onLogin: loginHandler }}>
+    <AuthContext.Provider value={{ isLoggedIn, userName, onLogout: logoutHandler, onLogin: loginHandler, setUserInfo: setLoginUserInfo }}>
       {props.children}
     </AuthContext.Provider>
   );
