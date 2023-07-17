@@ -1,23 +1,26 @@
-import React from 'react';
-import { BsCheckCircle, BsFillTrash3Fill } from 'react-icons/bs';
+import React from 'react'
+import {MdDelete, MdDone} from 'react-icons/md';
+import cn from 'classnames';
+
 import './scss/TodoItem.scss';
-import classNames from 'classnames';
 
 const TodoItem = ({ item, remove, check }) => {
 
-  const { id, title, done } = item;
-
+  const {id, title, done} = item;
   return (
     <li className='todo-list-item'>
-      <div className={classNames("check-circle", { active: done })} onClick={() => check(id, done)} >
-        <BsCheckCircle />
-      </div>
-      <span className={classNames('text', { finish: done })}>{title}</span>
-      <div className="remove" onClick={() => remove(id)}>
-        <BsFillTrash3Fill />
-      </div>
+        <div 
+          className={cn('check-circle', {active: done})}
+          onClick={() => check(id, done)}
+        >
+            {done && <MdDone />}
+        </div>
+        <span className={cn('text', {finish: done})}>{title}</span>
+        <div className="remove" onClick={() => remove(id)}>
+            <MdDelete />
+        </div>
     </li>
-  );
+  )
 }
 
-export default TodoItem
+export default TodoItem;

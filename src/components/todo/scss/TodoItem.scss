@@ -1,58 +1,63 @@
+
 @mixin content-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
 
 .todo-list-item {
-  display: flex;
-  align-items: center;
-  padding: 12px 0;
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
 
-  &:hover .remove {
-    opacity: 1;
-  }
-
-  .check-circle {
-    color: gray;
-    font-size: 32px;
-    margin-right: 20px;
-    cursor: pointer;
-
-    @include content-center();
-
-    &.active {
-      color: #38d9a9;
+    &:hover .remove {
+        display: block;
     }
 
-    &:hover {
-      opacity: 0.6;
+    .check-circle {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1px solid #9da1a7;
+        font-size: 24px;
+        margin-right: 20px;
+        cursor: pointer;
+
+        @include content-center;
+
+        &.active {
+            border: 1px solid #38d9a9;
+            color: #38d9a9;
+        }
     }
-  }
 
-  .text {
-    font-size: 21px;
-    color: #495057;
-    flex: 1;
+    .text {
+        font-size: 21px;
+        color: #495057;
+        flex: 1;
 
-    &.finish {
-      color: #919396;
-      text-decoration: line-through;
+        &.finish {
+            color: #919396;
+            text-decoration: line-through;
+        }
+    }   
+
+    .remove {
+        font-size: 28px;
+        cursor: pointer;
+        color: #f51b4f;
+
+        @include content-center;
+
+        display: none;
+
+        &:hover svg {
+            opacity: 0.6;
+        }
     }
-  }
 
-  .remove {
-    font-size: 25px;
-    cursor: pointer;
-    color: #f51b4f;
-    transition: 0.2s ease-in-out;
-
-    @include content-center();
-
-    opacity: 0;
-
-    &:hover svg {
-      opacity: 0.6;
-    }
-  }
 }
+
+
+

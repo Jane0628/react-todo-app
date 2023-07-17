@@ -19,7 +19,7 @@ const CustomSnackBar = ({ open }) => {
         fontSize: '24px',
       }}>
         <AlertTitle>Error</AlertTitle>
-        이미 로그인 중입니다.<br /> 자동으로 홈 화면으로 이동합니다.
+            이미 로그인 중입니다.<br/> 자동으로 홈 화면으로 이동합니다.
       </Alert>
     </Snackbar>
   );

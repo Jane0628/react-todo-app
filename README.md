@@ -40,7 +40,7 @@ $ npm install react-router-dom
 ```
 요약본
 ```
-$ npm i react-icons classnames sass reactstrap bootstrap @mui/material @emotion/react @emotion/styled @mui/icons-material react-router-dom
+$ npm i react-icons classnames sass reactstrap react-bootstrap bootstrap @mui/material @emotion/react @emotion/styled @mui/icons-material react-router-dom
 ```
 
 ## 리액트 라우터 설정
